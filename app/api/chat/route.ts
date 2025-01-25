@@ -1,3 +1,4 @@
+import { NextResponse } from 'next/server';
 interface ChatMessage {
   role: string;
   content: string;
