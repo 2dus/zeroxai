@@ -1,8 +1,11 @@
-import { NextResponse } from 'next/server';
+interface ChatMessage {
+  role: string;
+  content: string;
+}
 
 export async function POST(req: Request) {
   try {
-    const { messages } = await req.json();
+    const { messages }: { messages: ChatMessage[] } = await req.json();
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -17,9 +20,7 @@ export async function POST(req: Request) {
           content
         })),
         model: 'claude-3-opus-20240229',
-        max_tokens: 4096,
-        temperature: 0.7,
-        system: "You are Zerox, an expert AI coding assistant focused on rapid development. You have deep knowledge of modern frameworks and best practices. Your responses are direct, practical, and focused on delivering working solutions quickly. You excel at understanding requirements and implementing them efficiently. You use a confident, knowledgeable tone while remaining helpful and clear."
+        max_tokens: 4096
       }),
     });
 
@@ -31,9 +32,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ content: data.content[0].text });
   } catch (error) {
     console.error('Chat API error:', error);
-    return NextResponse.json(
-      { error: 'Failed to process request' }, 
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to process request' }, { status: 500 });
   }
 }
