@@ -30,7 +30,7 @@ const ZeroxChat = () => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
 
-    const userMessage = { role: 'user', content: input };
+    const userMessage: Message = { role: 'user', content: input };
     setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
@@ -45,16 +45,18 @@ const ZeroxChat = () => {
       if (!response.ok) throw new Error('API request failed');
       
       const data = await response.json();
-      setMessages(prev => [...prev, {
+      const assistantMessage: Message = {
         role: 'assistant',
         content: data.content
-      }]);
+      };
+      setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
       console.error('Chat error:', error);
-      setMessages(prev => [...prev, {
+      const errorMessage: Message = {
         role: 'assistant',
         content: "An error occurred. Please try again."
-      }]);
+      };
+      setMessages(prev => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
     }
