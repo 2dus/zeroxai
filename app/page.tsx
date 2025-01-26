@@ -4,8 +4,8 @@ export const dynamic = 'force-dynamic'
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <div className="container mx-auto p-4">
       <ZeroxChat />
-    </main>
+    </div>
   )
 }

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+
 interface ChatMessage {
   role: string;
   content: string;
@@ -21,13 +22,13 @@ export async function POST(req: Request) {
           content
         })),
         model: 'claude-3-opus-20240229',
-        max_tokens: 4096
+        max_tokens: 4096,
+        temperature: 0.7,
+        system: "You are Zerox, an expert AI coding assistant. Your responses are direct and focused on delivering working solutions efficiently."
       }),
     });
 
-    if (!response.ok) {
-      throw new Error(`API error: ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`API error: ${response.status}`);
 
     const data = await response.json();
     return NextResponse.json({ content: data.content[0].text });
